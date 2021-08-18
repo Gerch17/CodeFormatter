@@ -24,7 +24,7 @@ public class Formatter {
         currentIndex = 0;
     }
 
-    public String makeItClear(Reader reader, Writer writer) throws IOException {
+    public String makeItClear(Reader reader, Writer writer) throws IOException, InvalidCodeException {
         sb = read(reader);
         simpleCheck();
         refactor();
@@ -33,7 +33,7 @@ public class Formatter {
         return sb.toString();
     }
 
-    public void simpleCheck() {
+    private void simpleCheck() {
         if(StringUtils.countMatches(sb.toString(), CLOSED) != StringUtils.countMatches(sb.toString(), OPEN)) {
             throw new InvalidCodeException("The number of '{' does not match the number of '}'");
         }
