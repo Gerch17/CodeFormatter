@@ -1,16 +1,15 @@
 import exceptions.InvalidCodeException;
-import formatter.Formatter;
+import format.formatter.FormatterOldImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reader.Reader;
-import reader.string.StringReader;
-import writer.string.StringWriter;
+import io.reader.string.StringReader;
+import io.writer.string.StringWriter;
 
 import java.io.IOException;
 
 
-public class TestFormatter {
+public class TestFormatterOldImpl {
 
     private static final String SIMPLE_STRING = "qweqwewqe{qweqwe;qweqwe;if(){qweqwe;qweqwe;}}";
     private static final String EXPECTED_SIMPLE_STRING = "qweqwewqe{\n" +
@@ -23,16 +22,16 @@ public class TestFormatter {
             "}";
     private static final String EXCEPTION_STRING = "qweqwewqe{qweqwe;qweqwe;if(){qweqwe;qweqwe;";
 
-    private Formatter formatter;
+    private FormatterOldImpl formatterOldImpl;
 
     @BeforeEach
     public void before() {
-        this.formatter = new Formatter();
+        this.formatterOldImpl = new FormatterOldImpl();
     }
 
     @Test
     public void simpleTest() throws IOException {
-            String actual = formatter.makeItClear(new StringReader(SIMPLE_STRING), new StringWriter());
+            String actual = formatterOldImpl.makeItClear(new StringReader(SIMPLE_STRING), new StringWriter());
             Assertions.assertEquals(EXPECTED_SIMPLE_STRING, actual);
     }
 
@@ -40,7 +39,7 @@ public class TestFormatter {
     public void exceptionTest() {
         Assertions.assertThrows(InvalidCodeException.class,
                 () -> {
-                    formatter.makeItClear(new StringReader(EXCEPTION_STRING), new StringWriter());
+                    formatterOldImpl.makeItClear(new StringReader(EXCEPTION_STRING), new StringWriter());
                 });
     }
 

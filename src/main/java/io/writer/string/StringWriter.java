@@ -1,6 +1,8 @@
-package writer.string;
+package io.writer.string;
 
-import writer.Writer;
+import exceptions.CloseException;
+import io.writer.Writer;
+
 
 public class StringWriter implements Writer {
     private final StringBuilder sb;
@@ -20,7 +22,7 @@ public class StringWriter implements Writer {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() throws CloseException {
 
     }
 }

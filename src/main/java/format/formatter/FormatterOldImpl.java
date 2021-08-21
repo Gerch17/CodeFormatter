@@ -1,29 +1,30 @@
-package formatter;
+package format.formatter;
 
 import exceptions.InvalidCodeException;
-import org.apache.commons.lang3.StringUtils;
-import reader.Reader;
-import writer.Writer;
-
+import io.reader.Reader;
+import io.writer.Writer;
 import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
 
-public class Formatter {
+
+public class FormatterOldImpl implements Formatter {
     private StringBuilder sb;
     private int currentIndex;
     private int tabAmount;
-    private final static String OPEN = "{";
-    private final static String CLOSED = "}";
-    private final static String DOT = ";";
-    private final static String TAB = "    ";
-    private final static char NEW_LINE = '\n';
-    private final static char SPACE = ' ';
+    private static final String OPEN = "{";
+    private static final String CLOSED = "}";
+    private static final String DOT = ";";
+    private static final String TAB = "    ";
+    private static final char NEW_LINE = '\n';
+    private static final char SPACE = ' ';
 
 
-    public Formatter() {
+    public FormatterOldImpl() {
         sb = new StringBuilder();
         currentIndex = 0;
     }
 
+    @Override
     public String makeItClear(Reader reader, Writer writer) throws IOException, InvalidCodeException {
         sb = read(reader);
         simpleCheck();
@@ -34,7 +35,7 @@ public class Formatter {
     }
 
     private void simpleCheck() {
-        if(StringUtils.countMatches(sb.toString(), CLOSED) != StringUtils.countMatches(sb.toString(), OPEN)) {
+        if (StringUtils.countMatches(sb.toString(), CLOSED) != StringUtils.countMatches(sb.toString(), OPEN)) {
             throw new InvalidCodeException("The number of '{' does not match the number of '}'");
         }
     }
@@ -132,7 +133,7 @@ public class Formatter {
 
     public void write(Writer writer) throws IOException {
         char[] writeChar = sb.toString().toCharArray();
-        for(char ch : writeChar) {
+        for (char ch : writeChar) {
             writer.writeChar(ch);
         }
     }

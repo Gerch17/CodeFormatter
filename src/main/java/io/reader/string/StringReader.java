@@ -1,6 +1,8 @@
-package reader.string;
+package io.reader.string;
 
-import reader.Reader;
+import exceptions.CloseException;
+import io.reader.Reader;
+import java.io.IOException;
 
 public class StringReader implements Reader {
     char[] content;
@@ -22,7 +24,7 @@ public class StringReader implements Reader {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() throws CloseException {
 
     }
 }
