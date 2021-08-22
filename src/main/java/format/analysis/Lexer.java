@@ -2,7 +2,7 @@ package format.analysis;
 
 import exceptions.ReaderException;
 import io.reader.Reader;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +30,13 @@ public class Lexer {
             ch = reader.readChar();
             if (ch == OPEN_BRACKET) {
                 addTextLexeme();
-                lexemes.add(new Lexeme(Type.OPEN, tabs));
+                lexemes.add(new Lexeme(Token.OPEN, tabs));
             } else if (ch == CLOSE_BRACKET) {
                 addTextLexeme();
-                lexemes.add(new Lexeme(Type.CLOSE, tabs));
+                lexemes.add(new Lexeme(Token.CLOSE, tabs));
             } else if (ch == SEMICOLON) {
                 addTextLexeme();
-                lexemes.add(new Lexeme(Type.SEMICOLON, tabs));
+                lexemes.add(new Lexeme(Token.SEMICOLON, tabs));
             } else {
                 sb.append(ch);
             }
@@ -58,9 +58,9 @@ public class Lexer {
     private void makeRightTabs() {
         int actualTabs = 0;
         for (Lexeme lexeme : lexemes) {
-            if (lexeme.getType() == Type.OPEN) {
+            if (lexeme.getType() == Token.OPEN) {
                 actualTabs++;
-            } else if (lexeme.getType() == Type.CLOSE) {
+            } else if (lexeme.getType() == Token.CLOSE) {
                 actualTabs--;
                 lexeme.setTab(actualTabs);
             } else {

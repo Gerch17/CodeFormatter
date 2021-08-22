@@ -1,6 +1,6 @@
 package format.analysis;
 
-public enum Type {
+public enum Token {
     OPEN,
     CLOSE,
     SEMICOLON,

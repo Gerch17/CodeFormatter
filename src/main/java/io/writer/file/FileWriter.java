@@ -27,6 +27,7 @@ public class FileWriter implements Writer {
     @Override
     public void close() throws CloseException {
         try {
+            fout.flush();
             fout.close();
         } catch (IOException e) {
             throw new CloseException("Writer exception: file not found");

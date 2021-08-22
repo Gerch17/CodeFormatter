@@ -3,7 +3,7 @@ package format.analysis;
 import exceptions.InvalidCodeException;
 import exceptions.WriterException;
 import io.writer.Writer;
-import java.io.IOException;
+
 import java.util.List;
 
 public class OutPut {
@@ -23,14 +23,14 @@ public class OutPut {
     public Writer output(List<Lexeme> lexemes) throws WriterException {
         simpleCheck(lexemes);
         for (Lexeme lexeme : lexemes) {
-            if (lexeme.getType() == Type.OPEN) {
+            if (lexeme.getType() == Token.OPEN) {
                 writer.writeChar(SPACE);
                 writer.writeChar(OPEN_BRACKET);
                 writer.writeChar(NEW_LINE);
-            } else if (lexeme.getType() == Type.SEMICOLON) {
+            } else if (lexeme.getType() == Token.SEMICOLON) {
                 writer.writeChar(SEMICOLON);
                 writer.writeChar(NEW_LINE);
-            } else if (lexeme.getType() == Type.CLOSE) {
+            } else if (lexeme.getType() == Token.CLOSE) {
                 writeTab(lexeme.getTab());
                 writer.writeChar(CLOSE_BRACKET);
                 writer.writeChar(NEW_LINE);
@@ -51,9 +51,9 @@ public class OutPut {
     public void simpleCheck(List<Lexeme> lexemes) {
         int balance = 0;
         for (Lexeme lexeme : lexemes) {
-            if (lexeme.getType() == Type.CLOSE) {
+            if (lexeme.getType() == Token.CLOSE) {
                 balance++;
-            } else if (lexeme.getType() == Type.OPEN) {
+            } else if (lexeme.getType() == Token.OPEN) {
                 balance--;
             }
         }

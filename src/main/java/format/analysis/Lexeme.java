@@ -2,18 +2,17 @@ package format.analysis;
 
 public class Lexeme {
     private String value;
-    private Type type;
+    private Token token;
     private int tab;
 
-    public Lexeme(Type type, int tab) {
+    public Lexeme(Token token, int tab) {
         this.tab = tab;
-        this.type = type;
-        this.value = "";
+        this.token = token;
     }
 
     public Lexeme(String value, int tab) {
         this.tab = tab;
-        this.type = Type.TEXT;
+        this.token = Token.TEXT;
         this.value = value;
     }
 
@@ -25,12 +24,12 @@ public class Lexeme {
         this.value = value;
     }
 
-    public Type getType() {
-        return type;
+    public Token getType() {
+        return token;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(Token token) {
+        this.token = token;
     }
 
     public int getTab() {

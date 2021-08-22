@@ -7,11 +7,13 @@ import io.reader.Reader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class FileReader implements Reader {
     private final FileInputStream fin;
 
-    public FileReader(File file) throws IOException {
+    public FileReader(String file) throws IOException {
         this.fin = new FileInputStream(file);
     }
 
