@@ -2,7 +2,6 @@ package format.analysis;
 
 import exceptions.ReaderException;
 import io.reader.Reader;
-
 import java.util.ArrayList;
 import java.util.List;
 
