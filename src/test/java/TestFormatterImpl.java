@@ -1,4 +1,4 @@
-import exceptions.InvalidCodeException;
+import format.analysis.Lexer;
 import format.formatter.FormatterImpl;
 import io.reader.string.StringReader;
 import io.writer.string.StringWriter;
@@ -12,6 +12,8 @@ import java.io.IOException;
 public class TestFormatterImpl {
 
     private static final String SIMPLE_STRING = "qweqwewqe{qweqwe;qweqwe;if(){qweqwe;qweqwe;}}";
+    private static final String NEWLINE_STRING = "qweqwewqe\n\n\n\n\n\n\n{qweqwe;qweqwe;if(){qweqwe;qweqwe;}}";
+    private static final String TRIM_TEST = "qweqwewqe                     {qweqwe;qweqwe;if(){qweqwe;qweqwe;}}";
     private static final String EXPECTED_SIMPLE_STRING = "qweqwewqe {\n" +
             "    qweqwe;\n" +
             "    qweqwe;\n" +
@@ -20,27 +22,33 @@ public class TestFormatterImpl {
             "        qweqwe;\n" +
             "    }\n" +
             "}\n";
-    private static final String EXCEPTION_STRING = "qweqwewqe{qweqwe;qweqwe;if(){qweqwe;qweqwe;";
 
     private FormatterImpl formatterImpl;
 
     @BeforeEach
-    public void before() {
+    public void setUp() {
         this.formatterImpl = new FormatterImpl();
     }
 
     @Test
     public void simpleTest() throws IOException {
-            String actual = formatterImpl.makeItClear(new StringReader(SIMPLE_STRING), new StringWriter());
+            Lexer lexer = new Lexer(new StringReader(SIMPLE_STRING));
+            String actual = formatterImpl.makeItClear(lexer, new StringWriter());
             Assertions.assertEquals(EXPECTED_SIMPLE_STRING, actual);
     }
 
     @Test
-    public void exceptionTest() {
-        Assertions.assertThrows(InvalidCodeException.class,
-                () -> {
-                    formatterImpl.makeItClear(new StringReader(EXCEPTION_STRING), new StringWriter());
-                });
+    public void trimTest() throws IOException {
+        Lexer lexer = new Lexer(new StringReader(TRIM_TEST));
+        String actual = formatterImpl.makeItClear(lexer, new StringWriter());
+        Assertions.assertEquals(EXPECTED_SIMPLE_STRING, actual);
+    }
+
+    @Test
+    public void extraNewLineSeparationTest() throws IOException {
+        Lexer lexer = new Lexer(new StringReader(NEWLINE_STRING));
+        String actual = formatterImpl.makeItClear(lexer, new StringWriter());
+        Assertions.assertEquals(EXPECTED_SIMPLE_STRING, actual);
     }
 
 }

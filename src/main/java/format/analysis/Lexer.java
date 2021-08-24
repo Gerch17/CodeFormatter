@@ -2,11 +2,9 @@ package format.analysis;
 
 import exceptions.ReaderException;
 import io.reader.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class Lexer {
+public class Lexer implements ILexer {
+    private static final String TEXT = "TEXT";
     private static final char OPEN_BRACKET = '{';
     private static final char CLOSE_BRACKET = '}';
     private static final char SEMICOLON = ';';
@@ -14,57 +12,63 @@ public class Lexer {
     private static final String SPACE = " ";
     private final Reader reader;
     private StringBuilder sb;
-    private List<Lexeme> lexemes;
     private int tabs = 0;
+    private static char nextToken = '\0';
 
     public Lexer(Reader reader) {
         this.reader = reader;
         sb = new StringBuilder();
-        lexemes = new ArrayList<>();
     }
 
-    public List<Lexeme> setLexemes() throws ReaderException {
+    @Override
+    public IToken readToken() throws ReaderException {
         char ch;
-        while (reader.hasChar()) {
-            ch = reader.readChar();
-            if (ch == OPEN_BRACKET) {
-                addTextLexeme();
-                lexemes.add(new Lexeme(Token.OPEN, tabs));
-            } else if (ch == CLOSE_BRACKET) {
-                addTextLexeme();
-                lexemes.add(new Lexeme(Token.CLOSE, tabs));
-            } else if (ch == SEMICOLON) {
-                addTextLexeme();
-                lexemes.add(new Lexeme(Token.SEMICOLON, tabs));
-            } else {
-                sb.append(ch);
-            }
+        Token token;
+        if (nextToken != '\0') {
+            IToken newToken = makeToken(nextToken);
+            nextToken = '\0';
+            return newToken;
         }
-        makeRightTabs();
-        return lexemes;
+        ch = reader.readChar();
+        if (ch == OPEN_BRACKET || nextToken == OPEN_BRACKET) {
+            token = new Token(String.valueOf(OPEN_BRACKET), String.valueOf(OPEN_BRACKET));
+            nextToken = '\0';
+        } else if (ch == CLOSE_BRACKET || nextToken == CLOSE_BRACKET) {
+            token = new Token(String.valueOf(CLOSE_BRACKET), String.valueOf(CLOSE_BRACKET));
+            nextToken = '\0';
+        } else if (ch == SEMICOLON || nextToken == SEMICOLON) {
+            token = new Token(String.valueOf(SEMICOLON), String.valueOf(SEMICOLON));
+            nextToken = '\0';
+        } else {
+            String text = String.valueOf(ch);
+            char temp = reader.hasChar() ? reader.readChar() : '\0';
+            while (isText(temp)) {
+                text += temp;
+                temp = reader.hasChar() ? reader.readChar() : '\0';
+            }
+            token = new Token(TEXT, text.trim().replaceAll("\\s+", SPACE).replaceAll(NEW_LINE, ""));
+        }
+        return token;
     }
 
-    private void addTextLexeme() {
-        if (sb.length() != 0) {
-            String temp = sb.toString().trim().replaceAll("\\s+", SPACE).replaceAll(NEW_LINE, "");
-            sb.setLength(0);
-            sb.append(temp);
-            lexemes.add(new Lexeme(sb.toString(), tabs));
-            sb.setLength(0);
+    private boolean isText(char ch) {
+        if (ch != OPEN_BRACKET && ch != CLOSE_BRACKET && ch != SEMICOLON) {
+            return true;
         }
+        nextToken = ch;
+        return false;
     }
 
-    private void makeRightTabs() {
-        int actualTabs = 0;
-        for (Lexeme lexeme : lexemes) {
-            if (lexeme.getType() == Token.OPEN) {
-                actualTabs++;
-            } else if (lexeme.getType() == Token.CLOSE) {
-                actualTabs--;
-                lexeme.setTab(actualTabs);
-            } else {
-                lexeme.setTab(actualTabs);
-            }
+    private IToken makeToken(char ch) {
+        IToken token = new Token(String.valueOf(ch), String.valueOf(ch));
+        return token;
+    }
+
+    @Override
+    public boolean hasMoreTokens() throws ReaderException {
+        if (reader.hasChar() || nextToken != '\0') {
+            return true;
         }
+        return false;
     }
 }

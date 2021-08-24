@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 public class FileReader implements Reader {
     private final FileInputStream fin;
 
-    public FileReader(String file) throws IOException {
+    public FileReader(File file) throws IOException {
         this.fin = new FileInputStream(file);
     }
 

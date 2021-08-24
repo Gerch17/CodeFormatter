@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 
 
-public class FormatterOldImpl implements Formatter {
+public class FormatterOldImpl {
     private StringBuilder sb;
     private int currentIndex;
     private int tabAmount;
@@ -24,7 +24,6 @@ public class FormatterOldImpl implements Formatter {
         currentIndex = 0;
     }
 
-    @Override
     public String makeItClear(Reader reader, Writer writer) throws IOException, InvalidCodeException {
         sb = read(reader);
         simpleCheck();
