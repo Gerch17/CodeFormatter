@@ -1,8 +1,11 @@
 package format.analysis;
 
+import lombok.Setter;
+
+@Setter
 public class Token implements IToken {
-    private final String name;
-    private final String lexeme;
+    private String name;
+    private String lexeme;
 
     public Token(String name, String lexeme) {
         this.name = name;

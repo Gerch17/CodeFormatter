@@ -28,3 +28,5 @@ public class StringReader implements Reader {
 
     }
 }
+// "qwe"
+// [q][w][e]

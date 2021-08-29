@@ -12,14 +12,19 @@ import java.io.IOException;
 public class TestFormatterImpl {
 
     private static final String SIMPLE_STRING = "qweqwewqe{qweqwe;qweqwe;if(){qweqwe;qweqwe;}}";
-    private static final String NEWLINE_STRING = "qweqwewqe\n\n\n\n\n\n\n{qweqwe;qweqwe;if(){qweqwe;qweqwe;}}";
-    private static final String TRIM_TEST = "qweqwewqe                     {qweqwe;qweqwe;if(){qweqwe;qweqwe;}}";
     private static final String EXPECTED_SIMPLE_STRING = "qweqwewqe {\n" +
             "    qweqwe;\n" +
             "    qweqwe;\n" +
             "    if() {\n" +
             "        qweqwe;\n" +
             "        qweqwe;\n" +
+            "    }\n" +
+            "}\n";
+    private static final String ALL_TESTS = "String temp = \"Hello!{};\\\"\";for (int i = 0; i < temp.length(); i++){if(true){int q = 4;}}";
+    private static final String EXPECTED_ALL_TESTS = "String temp = \"Hello!{};\\\"\";\n" +
+            "for (int i = 0; i < temp.length(); i++) {\n" +
+            "    if(true) {\n" +
+            "        int q = 4;\n" +
             "    }\n" +
             "}\n";
 
@@ -38,17 +43,12 @@ public class TestFormatterImpl {
     }
 
     @Test
-    public void trimTest() throws IOException {
-        Lexer lexer = new Lexer(new StringReader(TRIM_TEST));
+    public void allTest() throws IOException {
+        Lexer lexer = new Lexer(new StringReader(ALL_TESTS));
         String actual = formatterImpl.makeItClear(lexer, new StringWriter());
-        Assertions.assertEquals(EXPECTED_SIMPLE_STRING, actual);
+        Assertions.assertEquals(EXPECTED_ALL_TESTS, actual);
     }
 
-    @Test
-    public void extraNewLineSeparationTest() throws IOException {
-        Lexer lexer = new Lexer(new StringReader(NEWLINE_STRING));
-        String actual = formatterImpl.makeItClear(lexer, new StringWriter());
-        Assertions.assertEquals(EXPECTED_SIMPLE_STRING, actual);
-    }
+
 
 }

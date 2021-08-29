@@ -10,15 +10,11 @@ import java.io.IOException;
 
 public class Application {
     public static void main(String[] args) {
-        try {
-            File file = new File("D://SberTasks//src//main//resources//Test.txt");
-            Reader reader = new StringReader("q{w;e;if(){f;asdasdd;}}");
-            Writer writer = new StringWriter();
-            FormatterImpl formatterImpl = new FormatterImpl();
-            Lexer lexer  = new Lexer(reader);
-            System.out.println(formatterImpl.makeItClear(lexer, writer));
-        } catch (IOException e) {
-            e.printStackTrace();
+        String temp = "Hello!{};\"";
+        for (int i = 0; i < temp.length(); i++) {
+            if (true) {
+                int q = 4;
+            }
         }
     }
 }

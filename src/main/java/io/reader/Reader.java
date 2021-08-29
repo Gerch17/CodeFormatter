@@ -2,7 +2,6 @@ package io.reader;
 
 import exceptions.ReaderException;
 import io.IClosable;
-import java.io.IOException;
 
 
 public interface Reader extends IClosable {
