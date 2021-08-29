@@ -8,7 +8,6 @@ import java.util.Map;
 public class SuperCommand {
     private int tabAmount;
     private String method;
-    private Writer writer;
     private String append;
 
     private static final Map<String, ICommand> methods = new HashMap<>() {

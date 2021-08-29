@@ -20,7 +20,6 @@ public class FormatterImpl implements Formatter {
     public String makeItClear(Lexer lexer, Writer writer) throws IOException, InvalidCodeException {
         State state = new State("not_need");
         int tab = 0;
-        FormatterState formatterState = new FormatterState(0);
         while (lexer.hasMoreTokens() && state != null) {
             Token token = lexer.readToken();
             tab = updateTab(tab, token);

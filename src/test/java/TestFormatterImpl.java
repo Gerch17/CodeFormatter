@@ -20,10 +20,10 @@ public class TestFormatterImpl {
             "        qweqwe;\n" +
             "    }\n" +
             "}\n";
-    private static final String ALL_TESTS = "String temp = \"Hello!{};\\\"\";for (int i = 0; i < temp.length(); i++){if(true){int q = 4;}}";
+    private static final String ALL_TESTS = "String temp = \"Hello!{};\\\"\";for (int i = 0; i < temp.length(); i++){if (true){int q = 4;}}";
     private static final String EXPECTED_ALL_TESTS = "String temp = \"Hello!{};\\\"\";\n" +
             "for (int i = 0; i < temp.length(); i++) {\n" +
-            "    if(true) {\n" +
+            "    if (true) {\n" +
             "        int q = 4;\n" +
             "    }\n" +
             "}\n";
