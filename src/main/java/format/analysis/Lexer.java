@@ -4,21 +4,22 @@ import exceptions.ReaderException;
 import format.analysis.tools.Command;
 import format.analysis.tools.CommandRepository;
 import format.analysis.tools.State;
+import format.analysis.tools.TokenBuilder;
 import format.analysis.tools.Transition;
 import io.reader.Reader;
 
 public class Lexer implements ILexer {
     private final Reader reader;
-    private StringBuilder sb;
     private CommandRepository commands;
     private Transition transitions;
+    private TokenBuilder tokenBuilder;
 
 
     public Lexer(Reader reader) {
         this.reader = reader;
-        sb = new StringBuilder();
         commands = new CommandRepository();
         transitions = new Transition();
+        tokenBuilder = new TokenBuilder();
     }
 
     @Override
@@ -29,7 +30,7 @@ public class Lexer implements ILexer {
             char ch = reader.readChar();
             Command command = commands.getCommand(state, ch);
             command.execute(token);
-            token.setName(String.valueOf(ch));
+            token = tokenBuilder.build(state, ch, token);
             state = transitions.nextState(state, ch);
         }
         return token;
@@ -38,9 +39,6 @@ public class Lexer implements ILexer {
 
     @Override
     public boolean hasMoreTokens() throws ReaderException {
-        if (reader.hasChar()) {
-            return true;
-        }
-        return false;
+        return reader.hasChar();
     }
 }

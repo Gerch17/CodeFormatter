@@ -4,13 +4,20 @@ import format.analysis.Token;
 
 public class Command {
 
-    private String append;
+    private Boolean append;
+    private Character ch;
 
-    public Command(String append) {
+    public Command(Boolean append) {
         this.append = append;
     }
 
+    public void setChar(Character ch) {
+        this.ch = ch;
+    }
+
     public void execute(Token token) {
-        token.setLexeme(token.getLexeme() + append);
+        if (append) {
+            token.setLexeme(token.getLexeme() + ch);
+        }
     }
 }

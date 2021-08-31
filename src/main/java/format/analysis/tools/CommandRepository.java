@@ -10,26 +10,20 @@ public class CommandRepository {
 
     public CommandRepository() {
         this.commandMap = new HashMap<>();
-        commandMap.put(pairBuilder(new State("def"), '{'), new Command(" {\n"));
-        commandMap.put(pairBuilder(new State("def"), '}'), new Command("}\n"));
-        commandMap.put(pairBuilder(new State("def"), ';'), new Command(";\n"));
-        commandMap.put(pairBuilder(new State("text"), '{'), new Command(" {\n"));
-        commandMap.put(pairBuilder(new State("text"), '}'), new Command("}\n"));
-        commandMap.put(pairBuilder(new State("text"), ';'), new Command(";\n"));
-        commandMap.put(pairBuilder(new State("last"), '{'), new Command(" {\n"));
-        commandMap.put(pairBuilder(new State("last"), '}'), new Command("}\n"));
-        commandMap.put(pairBuilder(new State("last"), ';'), new Command(";\n"));
-        commandMap.put(pairBuilder(new State("for"), ';'), new Command(";"));
-        commandMap.put(pairBuilder(new State("for1/2"), ';'), new Command(";"));
-        commandMap.put(pairBuilder(new State("for2/2"), ';'), new Command(";"));
+        commandMap.put(pairBuilder(new State("def"), null), new Command(true));
+
     }
 
     private Pair pairBuilder(State state, Character ch) {
         return new Pair<>(state, ch);
-
     }
 
     public Command getCommand(State state, Character ch) {
-        return commandMap.getOrDefault(pairBuilder(state, ch), new Command(ch.toString()));
+        Command command = commandMap.get(pairBuilder(state, ch));
+        if (command == null) {
+            command = commandMap.get(pairBuilder(state, null));
+            command.setChar(ch);
+        }
+        return command;
     }
 }
