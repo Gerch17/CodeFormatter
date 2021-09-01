@@ -1,5 +1,6 @@
 import exceptions.ReaderException;
-import format.analysis.Lexer;
+import format.analysis.IToken;
+import format.analysis.tools.LexerStateMachine;
 import io.reader.Reader;
 import io.reader.string.StringReader;
 import org.junit.jupiter.api.Assertions;
@@ -7,69 +8,57 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestLexer {
-    private static final String SIMPLE_TEST = "qweqweqwe";
-    private static final String OPEN_BRACKET_TEST = "{";
-    private static final String EXPECTED_OPEN_BRACKET_TEST = " {\n";
-    private static final String SEMICOLON_TEST = ";";
-    private static final String EXPECTED_SEMICOLON_TEST = ";\n";
-    private static final String CODE_TEST = "qweqwe;";
-    private static final String EXPECTED_CODE_TEST = "qweqwe;\n";
-    private static final String FOR_TEST = "for (int i = 0; i < temp.length(); i++){";
-    private static final String EXPECTED_FOR_TEST = "for (int i = 0; i < temp.length(); i++) {\n";
-    private static final String COMMENT_TEST = "\"q q \\\";{}\"";
-    private static final String MAKE_IT_SHORTER_TEST = "qwe{q";
-    private static final String EXPECTED_MAKE_IT_SHORTER_TEST = "qwe {\n";
+    private static final String TEST_STRING = "    a;\nb{}\"\\\"qwe{};\"for(int i = 0; i < qwe.size(); i++)";
+    private Reader reader;
 
     @BeforeEach
     public void setUp() {
+        reader = new StringReader(TEST_STRING);
     }
 
     @Test
-    public void lexerTest() throws ReaderException {
-        Reader reader = new StringReader(SIMPLE_TEST);
-        Lexer lexer = new Lexer(reader);
-        Assertions.assertEquals(SIMPLE_TEST, lexer.readToken().getLexeme());
+    void lexerTest() throws ReaderException {
+        LexerStateMachine lexer = new LexerStateMachine(reader);
+
+        IToken spaces =  lexer.nextToken();
+        Assertions.assertEquals("    ", spaces.getLexeme());
+        Assertions.assertEquals("Spacing", spaces.getName());
+
+        IToken a =  lexer.nextToken();
+        Assertions.assertEquals("a", a.getLexeme());
+        Assertions.assertEquals("Char", a.getName());
+
+        IToken semicolon =  lexer.nextToken();
+        Assertions.assertEquals(";", semicolon.getLexeme());
+        Assertions.assertEquals("Semicolon", semicolon.getName());
+
+        IToken newLine =  lexer.nextToken();
+        Assertions.assertEquals("\n", newLine.getLexeme());
+        Assertions.assertEquals("NewLine", newLine.getName());
+
+        IToken b =  lexer.nextToken();
+        Assertions.assertEquals("b", b.getLexeme());
+        Assertions.assertEquals("Char", b.getName());
+
+        IToken open =  lexer.nextToken();
+        Assertions.assertEquals("{", open.getLexeme());
+        Assertions.assertEquals("OpenBracket", open.getName());
+
+        IToken close =  lexer.nextToken();
+        Assertions.assertEquals("}", close.getLexeme());
+        Assertions.assertEquals("CloseBracket", close.getName());
+
+        IToken quotes =  lexer.nextToken();
+        Assertions.assertEquals("\"\\\"qwe{};\"", quotes.getLexeme());
+        Assertions.assertEquals("Quotes", quotes.getName());
+
+        lexer.nextToken();
+        lexer.nextToken();
+        lexer.nextToken();
+
+        IToken brackets =  lexer.nextToken();
+        Assertions.assertEquals("(int i = 0; i < qwe.size(); i++)", brackets.getLexeme());
+        Assertions.assertEquals("Brackets", brackets.getName());
     }
 
-    @Test
-    public void openBracketTest() throws ReaderException {
-        Reader reader = new StringReader(OPEN_BRACKET_TEST);
-        Lexer lexer = new Lexer(reader);
-        Assertions.assertEquals(EXPECTED_OPEN_BRACKET_TEST, lexer.readToken().getLexeme());
-    }
-
-    @Test
-    public void semiColonTest() throws ReaderException {
-        Reader reader = new StringReader(SEMICOLON_TEST);
-        Lexer lexer = new Lexer(reader);
-        Assertions.assertEquals(EXPECTED_SEMICOLON_TEST, lexer.readToken().getLexeme());
-    }
-
-    @Test
-    public void codeTest() throws ReaderException {
-        Reader reader = new StringReader(CODE_TEST);
-        Lexer lexer = new Lexer(reader);
-        Assertions.assertEquals(EXPECTED_CODE_TEST, lexer.readToken().getLexeme());
-    }
-
-    @Test
-    public void forTest() throws ReaderException {
-        Reader reader = new StringReader(FOR_TEST);
-        Lexer lexer = new Lexer(reader);
-        Assertions.assertEquals(EXPECTED_FOR_TEST, lexer.readToken().getLexeme());
-    }
-
-    @Test
-    public void commentTest() throws ReaderException {
-        Reader reader = new StringReader(COMMENT_TEST);
-        Lexer lexer = new Lexer(reader);
-        Assertions.assertEquals(COMMENT_TEST, lexer.readToken().getLexeme());
-    }
-
-    @Test
-    public void shorterTest() throws ReaderException {
-        Reader reader = new StringReader(MAKE_IT_SHORTER_TEST);
-        Lexer lexer = new Lexer(reader);
-        Assertions.assertEquals(EXPECTED_MAKE_IT_SHORTER_TEST, lexer.readToken().getLexeme());
-    }
 }

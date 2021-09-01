@@ -1,5 +1,6 @@
-package format.analysis;
+package format.analysis.tools;
 
+import format.analysis.IToken;
 import lombok.Setter;
 
 @Setter
