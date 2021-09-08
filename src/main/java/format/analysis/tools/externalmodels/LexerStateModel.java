@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class LexerTransitions {
+public class LexerStateModel {
     private String state;
-    private List<LexerTransition> transitions;
+    private List<LexerTools> transitions;
 }

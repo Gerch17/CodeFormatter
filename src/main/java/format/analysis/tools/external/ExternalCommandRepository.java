@@ -2,8 +2,8 @@ package format.analysis.tools.external;
 
 import format.analysis.tools.ICommand;
 import format.analysis.tools.State;
-import format.analysis.tools.externalmodels.LexerTransition;
-import format.analysis.tools.externalmodels.LexerTransitions;
+import format.analysis.tools.externalmodels.LexerTools;
+import format.analysis.tools.externalmodels.LexerStateModel;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -24,7 +24,7 @@ public class ExternalCommandRepository {
     private Yaml yaml;
 
     public ExternalCommandRepository(String commandPath) {
-        yaml = new Yaml(new Constructor(LexerTransitions.class));
+        yaml = new Yaml(new Constructor(LexerStateModel.class));
         commands = new HashMap<>();
         initCommands(commandPath);
     }
@@ -40,10 +40,10 @@ public class ExternalCommandRepository {
     private void initCommands(String commandPath) {
         try {
             InputStream inputStream = new FileInputStream(commandPath);
-            List<LexerTransitions> lexerCommandsList = yaml.load(inputStream);
-            for (LexerTransitions command : lexerCommandsList) {
+            List<LexerStateModel> lexerCommandsList = yaml.load(inputStream);
+            for (LexerStateModel command : lexerCommandsList) {
                 String state = command.getState();
-                for (LexerTransition lexerCommand : command.getTransitions()) {
+                for (LexerTools lexerCommand : command.getTransitions()) {
                     ICommand commandToMap = createCommand(String.valueOf(lexerCommand.getCommand()));
                     commands.put(new Pair(new State(state), lexerCommand.getCh()), commandToMap);
                 }

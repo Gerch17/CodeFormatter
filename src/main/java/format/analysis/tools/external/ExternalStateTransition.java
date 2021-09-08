@@ -1,8 +1,8 @@
 package format.analysis.tools.external;
 
 import format.analysis.tools.State;
-import format.analysis.tools.externalmodels.LexerTransition;
-import format.analysis.tools.externalmodels.LexerTransitions;
+import format.analysis.tools.externalmodels.LexerTools;
+import format.analysis.tools.externalmodels.LexerStateModel;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -20,7 +20,7 @@ public class ExternalStateTransition {
     private Map<Pair<String, String>, String> transitionMap;
 
     public ExternalStateTransition(String pathToTransition) {
-        yaml = new Yaml(new Constructor(LexerTransitions.class));
+        yaml = new Yaml(new Constructor(LexerStateModel.class));
         transitionMap = new HashMap<>();
 
         initTransition(pathToTransition);
@@ -37,10 +37,10 @@ public class ExternalStateTransition {
     private void initTransition(String pathToTransition) {
         try {
             InputStream inputStream = new FileInputStream(pathToTransition);
-            List<LexerTransitions> lexerTransitions = yaml.load(inputStream);
+            List<LexerStateModel> lexerTransitions = yaml.load(inputStream);
 
-            for (LexerTransitions transitions : lexerTransitions) {
-                for (LexerTransition transition : transitions.getTransitions()) {
+            for (LexerStateModel transitions : lexerTransitions) {
+                for (LexerTools transition : transitions.getTransitions()) {
                     transitionMap.put(new Pair(transitions.getState(), transition.getCh()),
                             String.valueOf(transition.getTransferTo()));
                 }
