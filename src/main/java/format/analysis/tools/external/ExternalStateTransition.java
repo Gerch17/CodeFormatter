@@ -7,14 +7,12 @@ import format.analysis.tools.externalmodels.LexerTransitions;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.javatuples.Pair;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 @Slf4j
 public class ExternalStateTransition {
@@ -33,7 +31,6 @@ public class ExternalStateTransition {
         if (newState == null) {
             newState = transitionMap.get(new Pair<>(state.getStateName(), null));
         }
-
         return new State(newState);
     }
 

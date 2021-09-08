@@ -6,4 +6,5 @@ import lombok.Data;
 public class LexerTransition {
     private String ch;
     private String transferTo;
+    private String command;
 }
