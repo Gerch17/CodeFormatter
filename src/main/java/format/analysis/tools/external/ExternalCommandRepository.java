@@ -2,23 +2,20 @@ package format.analysis.tools.external;
 
 import format.analysis.tools.ICommand;
 import format.analysis.tools.State;
-import format.analysis.tools.external.utils.YamlConstructor;
+import format.analysis.tools.externalmodels.LexerTransition;
+import format.analysis.tools.externalmodels.LexerTransitions;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import format.analysis.tools.externalmodels.LexerTransition;
-import format.analysis.tools.externalmodels.LexerTransitions;
 import lombok.extern.slf4j.Slf4j;
 import org.javatuples.Pair;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+
 
 @Slf4j
 public class ExternalCommandRepository {
@@ -27,7 +24,7 @@ public class ExternalCommandRepository {
     private Yaml yaml;
 
     public ExternalCommandRepository(String commandPath) {
-        yaml = new Yaml(new YamlConstructor<>(LexerTransitions.class));
+        yaml = new Yaml(new Constructor(LexerTransitions.class));
         commands = new HashMap<>();
         initCommands(commandPath);
     }

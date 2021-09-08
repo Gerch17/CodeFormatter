@@ -2,8 +2,16 @@ package format.formatter;
 
 import format.analysis.IToken;
 import format.analysis.tools.State;
-import format.formatter.commands.*;
-
+import format.formatter.commands.AppendChar;
+import format.formatter.commands.AppendWithTab;
+import format.formatter.commands.CloseBracket;
+import format.formatter.commands.CloseBracketWithoutNewLine;
+import format.formatter.commands.DoNothing;
+import format.formatter.commands.ICommand;
+import format.formatter.commands.OpenBracket;
+import format.formatter.commands.Semicolon;
+import format.formatter.commands.SpaceAndChar;
+import format.formatter.commands.Spacing;
 import java.util.HashMap;
 import java.util.Map;
 import org.javatuples.Pair;
