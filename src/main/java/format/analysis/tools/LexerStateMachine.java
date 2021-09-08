@@ -2,19 +2,24 @@ package format.analysis.tools;
 
 import exceptions.ReaderException;
 import format.analysis.IToken;
-import format.analysis.tools.commands.ICommand;
+import format.analysis.tools.external.ExternalCommandRepository;
+import format.analysis.tools.external.ExternalStateTransition;
 import io.reader.Reader;
 import io.reader.string.StringReader;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class LexerStateMachine implements ILexer {
-    private final CommandRepository commandRepository;
-    private final Transition transition;
     private final Reader reader;
     private IContext context;
+    private ExternalCommandRepository commandRepository;
+    private ExternalStateTransition transition;
+    private static final String PATH_TO_COMMAND = "src\\main\\resources\\LexerCommands.yaml";
+    private static final String PATH_TO_TRANSITION = "src\\main\\resources\\LexerTransition.yaml";
 
     public LexerStateMachine(Reader reader) {
-        this.commandRepository = new CommandRepository();
-        this.transition = new Transition();
+        this.commandRepository = new ExternalCommandRepository(PATH_TO_COMMAND);
+        this.transition = new ExternalStateTransition(PATH_TO_TRANSITION);
         this.reader = reader;
         this.context = new Context();
     }
@@ -45,7 +50,7 @@ public class LexerStateMachine implements ILexer {
 
     private State step(Reader reader, State state, IContext context) throws ReaderException {
         char ch = reader.readChar();
-        ICommand command = commandRepository.getCommand(state, ch);
+        ICommand command = (ICommand) commandRepository.getCommand(state, Character.valueOf(ch));
         command.execute(ch, context);
         return  transition.nextState(state, ch);
     }

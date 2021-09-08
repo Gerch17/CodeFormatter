@@ -1,5 +1,6 @@
 package format.analysis.tools.commands;
 
+import format.analysis.tools.ICommand;
 import format.analysis.tools.IContext;
 
 public class AppendLexeme implements ICommand {

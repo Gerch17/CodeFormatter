@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestLexer {
-    private static final String TEST_STRING = "    a;\nb{}\"\\\"qwe{};\"for(int i = 0; i < qwe.size(); i++)";
+    private static final String TEST_STRING = "    a;\nb{}\"\\\"qwe{};\"for()if()\\\\q\n/*q*/";
     private Reader reader;
 
     @BeforeEach
@@ -52,13 +52,30 @@ public class TestLexer {
         Assertions.assertEquals("\"\\\"qwe{};\"", quotes.getLexeme());
         Assertions.assertEquals("Quotes", quotes.getName());
 
-        lexer.nextToken();
-        lexer.nextToken();
-        lexer.nextToken();
+        IToken forToken = lexer.nextToken();
+        Assertions.assertEquals("for", forToken.getLexeme());
+        Assertions.assertEquals("For", forToken.getName());
 
         IToken brackets =  lexer.nextToken();
-        Assertions.assertEquals("(int i = 0; i < qwe.size(); i++)", brackets.getLexeme());
-        Assertions.assertEquals("Brackets", brackets.getName());
+        Assertions.assertEquals("(", brackets.getLexeme());
+        Assertions.assertEquals("OpenParenthesis", brackets.getName());
+        lexer.nextToken();
+        lexer.nextToken();
+        lexer.nextToken();
+        lexer.nextToken();
+        lexer.nextToken();
+        IToken oneLineComment = lexer.nextToken();
+        Assertions.assertEquals("\\\\", oneLineComment.getLexeme());
+        Assertions.assertEquals("OneLineComment", oneLineComment.getName());
+        lexer.nextToken();
+        lexer.nextToken();
+        IToken multiLineCommentStart = lexer.nextToken();
+        Assertions.assertEquals("/*", multiLineCommentStart.getLexeme());
+        Assertions.assertEquals("MultiLineComment", multiLineCommentStart.getName());
+        lexer.nextToken();
+        IToken multiLineCommentEnd = lexer.nextToken();
+        Assertions.assertEquals("*/", multiLineCommentEnd.getLexeme());
+        Assertions.assertEquals("MultiLineCommentEnd", multiLineCommentEnd.getName());
     }
 
 }

@@ -18,9 +18,26 @@ public class Transition {
         transitionMap.put(pairBuilder(new State("def"), "Semicolon"), new State("new_line"));
         transitionMap.put(pairBuilder(new State("def"), "OpenBracket"), new State("new_line"));
         transitionMap.put(pairBuilder(new State("def"), "CloseBracket"), new State("new_line"));
+        transitionMap.put(pairBuilder(new State("def"), "Variable"), new State("def"));
+        transitionMap.put(pairBuilder(new State("def"), "OpenParenthesis"), new State("def"));
+        transitionMap.put(pairBuilder(new State("def"), "CloseParenthesis"), new State("def"));
+        transitionMap.put(pairBuilder(new State("def"), "For"), new State("for"));
+        transitionMap.put(pairBuilder(new State("def"), "OneLineComment"), new State("one_line_comment"));
+        transitionMap.put(pairBuilder(new State("def"), "MultiLineComment"), new State("multi_line_comment"));
         transitionMap.put(pairBuilder(new State("new_line"), null), new State("def"));
+        transitionMap.put(pairBuilder(new State("new_line"), "OneLineComment"), new State("one_line_comment"));
+        transitionMap.put(pairBuilder(new State("new_line"), "MultiLineComment"), new State("multi_line_comment"));
         transitionMap.put(pairBuilder(new State("new_line"), "CloseBracket"), new State("new_line"));
-
+        transitionMap.put(pairBuilder(new State("new_line"), "For"), new State("for"));
+        transitionMap.put(pairBuilder(new State("still_for"), "CloseParenthesis"), new State("for_started"));
+        transitionMap.put(pairBuilder(new State("for"), "OpenParenthesis"), new State("for_started"));
+        transitionMap.put(pairBuilder(new State("for_started"), "OpenParenthesis"), new State("still_for"));
+        transitionMap.put(pairBuilder(new State("for_started"), "CloseParenthesis"), new State("def"));
+        transitionMap.put(pairBuilder(new State("for_started"), null), new State("for_started"));
+        transitionMap.put(pairBuilder(new State("one_line_comment"), "NewLine"), new State("def"));
+        transitionMap.put(pairBuilder(new State("one_line_comment"), null), new State("one_line_comment"));
+        transitionMap.put(pairBuilder(new State("multi_line_comment"), null), new State("multi_line_comment"));
+        transitionMap.put(pairBuilder(new State("multi_line_comment"), "MultiLineCommentEnd"), new State("def"));
     }
 
     private Pair pairBuilder(State state, String character) {

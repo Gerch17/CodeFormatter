@@ -12,17 +12,19 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 public class FormatterTest {
-    private static final String TEST_STRING = "qwe;qwe;if(){qwe;if(){for(int i = 0 ; i < temp.length(); i++){String             amogus = \"{};\\\"\";}}}";
+    private static final String TEST_STRING = "qwe;qwe;if(){qwe;if(){for(int i = 0 ; i < temp.length(); i++){String             amogus = \"{};\\\"\";}}}\\\\q{};\n/*q;{}\n{{*/";
     private static final String EXPECTED_TEST_STRING = "qwe;\n" +
             "qwe;\n" +
             "if(){\n" +
             "    qwe;\n" +
             "    if(){\n" +
-            "        for(int i = 0 ; i < temp.length(); i++){\n" +
+            "        for (int i = 0 ; i < temp.length(); i++){\n" +
             "            String amogus = \"{};\\\"\";\n" +
             "        }\n" +
             "    }\n" +
-            "}\n";
+            "}\n" +
+            "\\\\q{};\n" +
+            "/*q;{}\n{{*/";
     private Writer writer;
     private Reader reader;
     private ILexer lexer;

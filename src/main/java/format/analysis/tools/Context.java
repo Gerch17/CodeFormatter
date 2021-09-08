@@ -1,5 +1,8 @@
 package format.analysis.tools;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Context implements IContext {
 
     private String tokenName;
@@ -35,6 +38,7 @@ public class Context implements IContext {
     @Override
     public Token buildToken() {
         Token token = new Token(tokenName, lexeme.toString());
+        log.debug("return token with Name: {} and lexeme: {}", tokenName, lexeme.toString());
         return token;
     }
 

@@ -1,0 +1,72 @@
+- state: 'def'
+  transitions:
+    - ch: null
+      transferTo: 'null'
+    - ch: "\n"
+      transferTo: 'null'
+    - ch: ' '
+      transferTo: 'spacing'
+    - ch: '"'
+      transferTo: 'quotes'
+    - ch: '('
+      transferTo: 'null'
+    - ch: ')'
+      transferTo: 'null'
+    - ch: 'f'
+      transferTo: 'for1'
+    - ch: "\\"
+      transferTo: 'one_comment'
+    - ch: '/'
+      transferTo: 'multi_comment'
+    - ch: '*'
+      transferTo: 'multi_comment_end'
+- state: 'spacing'
+  transitions:
+    - ch: null
+      transferTo: 'null'
+    - ch: ' '
+      transferTo: 'spacing'
+- state: 'quotes'
+  transitions:
+    - ch: '"'
+      transferTo: 'null'
+    - ch: null
+      transferTo: 'quotes'
+    - ch: "\\"
+      transferTo: 'still_quotes'
+- state: 'still_quotes'
+  transitions:
+    - ch: null
+      transferTo: 'quotes'
+- state: 'for1'
+  transitions:
+    - ch: 'o'
+      transferTo: 'for2'
+    - ch: null
+      transferTo: 'null'
+- state: 'for2'
+  transitions:
+    - ch: 'r'
+      transferTo: 'for3'
+    - ch: null
+      transferTo: 'null'
+- state: 'for3'
+  transitions:
+    - ch: ' '
+      transferTo: 'null'
+    - ch: '('
+      transferTo: 'null'
+    - ch: null
+      transferTo: 'null'
+- state: 'for'
+  transitions:
+    - ch: null
+      transferTo: 'null'
+- state: 'one_comment'
+  transitions:
+    - ch: null
+      transferTo: 'null'
+- state: 'multi_comment'
+  transitions:
+    - ch: null
+      transferTo: 'null'

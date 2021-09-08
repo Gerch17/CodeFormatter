@@ -1,0 +1,64 @@
+- state: 'def'
+  transitions:
+    - tokenName: 'Char'
+      stateTransfer: 'def'
+    - tokenName: null
+      stateTransfer: 'def'
+    - tokenName: 'Semicolon'
+      stateTransfer: 'new_line'
+    - tokenName: 'OpenBracket'
+      stateTransfer: 'new_line'
+    - tokenName: 'CloseBracket'
+      stateTransfer: 'new_line'
+    - tokenName: 'Variable'
+      stateTransfer: 'def'
+    - tokenName: 'OpenParenthesis'
+      stateTransfer: 'def'
+    - tokenName: 'CloseParenthesis'
+      stateTransfer: 'def'
+    - tokenName: 'For'
+      stateTransfer: 'for'
+    - tokenName: 'OneLineComment'
+      stateTransfer: 'one_line_comment'
+    - tokenName: 'MultiLineComment'
+      stateTransfer: 'multi_line_comment'
+- state: 'new_line'
+  transitions:
+    - tokenName: null
+      stateTransfer: 'def'
+    - tokenName: 'OneLineComment'
+      stateTransfer: 'one_line_comment'
+    - tokenName: 'MultiLineComment'
+      stateTransfer: 'multi_line_comment'
+    - tokenName: 'CloseBracket'
+      stateTransfer: 'new_line'
+    - tokenName: 'For'
+      stateTransfer: 'for'
+- state: 'still_for'
+  transitions:
+    - tokenName: 'CloseParenthesis'
+      stateTransfer: 'for_started'
+- state: 'for'
+  transitions:
+    - tokenName: 'OpenParenthesis'
+      stateTransfer: 'for_started'
+- state: 'for_started'
+  transitions:
+    - tokenName: 'OpenParenthesis'
+      stateTransfer: 'still_for'
+    - tokenName: 'CloseParenthesis'
+      stateTransfer: 'def'
+    - tokenName: null
+      stateTransfer: 'for_started'
+- state: 'one_line_comment'
+  transitions:
+    - tokenName: 'NewLine'
+      stateTransfer: 'def'
+    - tokenName: null
+      stateTransfer: 'one_line_comment'
+- state: 'multi_line_comment'
+  transitions:
+    - tokenName: 'MultiLineCommentEnd'
+      stateTransfer: 'def'
+    - tokenName: null
+      stateTransfer: 'multi_line_comment'
